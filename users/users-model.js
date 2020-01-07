@@ -9,13 +9,7 @@ function getUsers() {
   return db("users");
 }
 function add(user) {
-  return db("users")
-    .insert(user)
-    .then(id => {
-      return db("users")
-        .where({ id: id[0] })
-        .first();
-    });
+  return db('users').insert(user, 'id')
 }
 function findByUser(username) {
   return db("users")

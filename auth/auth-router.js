@@ -1,40 +1,42 @@
-const express = require("express");
-const users = require("../users/users-model");
+const router = require('express').Router();
+const userDB = require("./auth-model");
 const generateToken = require("./tokenGen");
-const router = express.Router();
 const jwt = require("jsonwebtoken");
-
+const validateUser = require('../middleware/middleware')
 const bcrypt = require("bcryptjs");
-router.post("/register", (req, res) => {
-  const { username, password } = req.body;
-  if (username && password) {
-    req.body.password = bcrypt.hashSync(req.body.password, 8);
-    users
-      .add(req.body)
-      .then(user => {
-        console.log("USER: ", user, "THIS IS THE USER");
-        const token = generateToken(user);
-        console.log("TOKEN: ", token);
-        res.status(201).json({
-          id: user.id,
-          instructor: user.instructor ? true : false,
-          token
-        });
+
+router.post('/register', validateUser, (req, res) => {
+  const user = ({ username, password } = req.body);
+
+  bcrypt
+    .hash(user.password, 8)
+    .then((hash) => {
+        user.password = hash;
+
+    userDB
+      .add(user)
+      .then((newUser) => {
+        res.status(201).json({ userId: newUser[0] });
       })
-      .catch(err => {
-        res.status(500).json({ message: "internal error adding user", err });
+      .catch((error) => {
+        if (error.errno === 19) {
+          res.status(403).json({ message: "Username already exists" });
+        } else {
+          res.status(500).json({ message: "Error adding new user" });
+        }
       });
-  } else {
-    res
-      .status(400)
-      .json({ message: "username, password and instructor is required" });
-  }
+    })
+    .catch((error) => {
+      console.log(error)
+      res.status(500).json({ message: "Error generating hash" })
+
+    });
 });
 
 router.post("/login", (req, res) => {
   const { password, username } = req.body;
   if (username && password) {
-    users
+    user
       .findByUser(username)
       .then(user => {
         if (user && bcrypt.compareSync(password, user.password)) {
