@@ -1,0 +1,31 @@
+{
+  "name": "back-end",
+  "version": "1.0.0",
+  "description": "These days, fitness classes can be held anywhere - a park, an unfinished basement or a garage - not just at a traditional gym. Certified fitness instructors need an easy way to take the awkwardness out of attendance taking and client payment processing. While you could use several mobile apps to accomplish this, AnywhereFitness is the all-in-one solution to meet your “on-location” fitness class needs. AnywhereFitness makes it painless for Instructors and Clients alike to hold and attend Fitness classes wherever they might be held. Instructors can take attendance, request and process payments, create virtual “punch passes” for each type of class offered, alert clients of cancellations or location changes and so much more. Clients can easily find out information on classes - location, class size, start time and duration, as well as reschedule or cancel an upcoming appointment or reservation right from the mobile app.\r ## MVP\r 1. User can create/register as a \"Client\" and login with the registered credentials.(web, mobile)\r 2. User can create/register as an \"Instructor\" by entering an additional Auth Code during signup, and can login with the registered credentials.(web, mobile)\r 3. \"Client\" and \"Instructor\" are both presented with the appropriate onboarding walkthrough on first signin, with an option to skip it.(UX, mobile)\r 4. Authenticated \"Instructor\" can create update and delete a \"Class\". At a minimum, each \"class\" must have the following properties(web, mobile):",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "server": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BW-Anywhere-Fit/Back-End.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BW-Anywhere-Fit/Back-End/issues"
+  },
+  "homepage": "https://github.com/BW-Anywhere-Fit/Back-End#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "helmet": "^3.21.2",
+    "jsonwebtoken": "^8.5.1",
+    "knex": "^0.20.7",
+    "nodemon": "^2.0.2",
+    "sqlite3": "^4.1.1"
+  }
+}
