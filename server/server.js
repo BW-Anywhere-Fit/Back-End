@@ -5,6 +5,7 @@ const helmet = require("helmet");
 const usersRouter = require("../users/users-router");
 const authRouter = require("../auth/auth-router");
 const classesRouter = require("../classes/classes-router");
+const clientRouter = require('../auth/client-router');
 
 const restricted = require("../auth/restricted-middleware");
 const instructor = require("../auth/instructor-only");
@@ -22,5 +23,6 @@ server.get("/", (req, res) => {
 server.use("/users", restricted, instructor, usersRouter);
 server.use("/auth", authRouter);
 server.use("/classes", classesRouter);
+server.use('/clients', clientRouter);
 
 module.exports = server;

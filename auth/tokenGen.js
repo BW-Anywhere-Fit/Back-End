@@ -11,5 +11,5 @@ module.exports = function generateToken(user) {
     expiresIn: "1d"
   };
 
-  return jwt.sign(payload, process.env.SECRET, options);
+  return jwt.sign(payload, process.env.SECRET || 'it be a secret', options);
 };

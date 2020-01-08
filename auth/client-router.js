@@ -16,7 +16,7 @@ router.post('/register', validateUser, (req, res) => {
     userDB
       .add(user)
       .then((newUser) => {
-        res.status(201).json({ userId: newUser[0], instructor: true });
+        res.status(201).json({ userId: newUser[0], instructor: false });
       })
       .catch((error) => {
         if (error.errno === 19) {
@@ -44,7 +44,7 @@ router.post("/login", validateUser, (req, res) => {
               const token = generateToken(user);
               res.status(200).json({
                 id: user.id,
-                instructor: true,
+                instructor: false,
                 token: token
               })
             } else {
