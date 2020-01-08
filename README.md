@@ -1,35 +1,136 @@
-## Pitch
- These days, fitness classes can be held anywhere - a park, an unfinished basement or a garage - not just at a traditional gym. Certified fitness instructors need an easy way to take the awkwardness out of attendance taking and client payment processing. While you could use several mobile apps to accomplish this, AnywhereFitness is the all-in-one solution to meet your “on-location” fitness class needs. AnywhereFitness makes it painless for Instructors and Clients alike to hold and attend Fitness classes wherever they might be held. Instructors can take attendance, request and process payments, create virtual “punch passes” for each type of class offered, alert clients of cancellations or location changes and so much more. Clients can easily find out information on classes - location, class size, start time and duration, as well as reschedule or cancel an upcoming appointment or reservation right from the mobile app.
-## MVP
-1. User can create/register as a "Client" and login with the registered credentials.(web, mobile)
-2. User can create/register as an "Instructor" by entering an additional Auth Code during signup, and can login with the registered credentials.(web, mobile)
-3. "Client" and "Instructor" are both presented with the appropriate onboarding walkthrough on first signin, with an option to skip it.(UX, mobile)
-4. Authenticated "Instructor" can create update and delete a "Class". At a minimum, each "class" must have the following properties(web, mobile):
+Anywhere Fitness
+Heroku deployment https://bw-anywhere-fitness1.herokuapp.com/
 
-	* Name
-	* Type
-	* Start time
-	* Duration
-	* "Intensity" level
-	* Location
-	* Current number of registered attendees
-	* Max class size
+Endpoints
+POST Register
+https://bw-anywhere-fitness1.herokuapp.com/auth/register
 
-5. Authenticated "Instructor" can create "virtual" punch pass categories for each type of group fitness class they offer (yoga, insanity, RIPPED, HIGH, pilates, etc.)(mobile)
-6. Authenticated "Client" can search for avaialble classes. At a minimum, they must be able to search by the following criteria(web, mobile):
-	* class time
-	* class date
-	* class duration
-	* class type
-	* "Intensity level"
-	* class location
-7. Authenticated user can reserve a spot in a class with available seats open, and can reschedule or cancel their current reservation from the mobile app(mobile).
+{
+	"username": "new_user",
+	"password": "pass",
+	"instructor": true
+}
+POST Login
+https://anywhere-fitness.herokuapp.com/auth/login
 
-## Rubrics
-https://www.notion.so/Web-Unit-4-Node-ac50a1d0cf0a4941a1b20cd28a1c03c6
+{
+	"username": "new_user",
+	"password": "pass"
+}
+On Login and Register You Will Receive a Token
+{
+  "id": 3,
+  "instructor": "false"
+  "token": "eyJhbGciOiJ3ODQ0MX0.6es5Q9hZJw5U8a5EyWucbMM60xRoGX5_U3kQQ5BVPH0"
+}
+GET Classes
+https://anywhere-fitness.herokuapp.com/classes
 
-### You will build a Web API in coordination with the front end team.
+{
+    "id": 1,
+    "name": "CrossFit",
+    "schedule": "Thursday & Saturday 11:00 AM",
+    "location": "123 Main Street",
+    "image": null,
+    "instructor_id": 1
+  },
+  {
+    "id": 2,
+    "name": "Tai-Chi",
+    "schedule": "Saturday 11:00 AM",
+    "location": "456 Parker Ave",
+    "image": null,
+    "instructor_id": 3
+  }
+GET Classes by ID
+https://anywhere-fitness.herokuapp.com/classes/:id
 
-The API should provide the endpoints that the front end needs to complete client requirements and demonstrate your proficiency in the skills you've learned so far.
+GET Clients by Class ID
+https://anywhere-fitness.herokuapp.com/classes/:id/list
 
-The API should be built using the REST architectural pattern, provide data persistence, incorporate authentication, include automated tests and be deployed to a hosting platform of your choice.
+On Success Returns Array of Users
+
+[
+  {
+    "id": 2,
+    "username": "workout_warrior_1",
+    "uses_remaining": 10
+  }
+]
+GET Classes by Instructor
+https://anywhere-fitness.herokuapp.com/classes/instructor/:id
+
+[
+  {
+    "name": "CrossFit",
+    "username": "instructor",
+    "schedule": "Thursday & Saturday 11:00 AM",
+    "location": "123 Main Street",
+    "image": null,
+    "id": 1
+  },
+  {
+    "name": "Yoga",
+    "username": "instructor",
+    "schedule": "Sunday 9:00 AM",
+    "location": "1600 Fox Drive",
+    "image": null,
+    "id": 3
+  }
+]
+GET Classes by Client
+https://anywhere-fitness.herokuapp.com/classes/client/:id
+
+POST Class
+https://anywhere-fitness.herokuapp.com/classes
+
+
+{
+	"name" : "KickBoxing",
+	"schedule" : "Tues & Thurs 3PM",
+	"location": "201 Baker St"
+}
+DELETE Class
+https://anywhere-fitness.herokuapp.com/classes/:id
+
+Returns an Array of All Classes Remaining
+
+On Success
+
+{
+  "message": "class deleted"
+}
+On Failure
+
+{
+  "message": "error removing class either not authorized or class does not exist"
+}
+DELETE Class By Instructor ID
+https://anywhere-fitness.herokuapp.com/classes/instructor/:id/remove
+
+Send the Class You Want to Delete in the Body of the Request
+
+{
+	"id": 4
+}
+Returns an Array of All Classes By Instructor
+
+[
+  {
+    "name": "CrossFit",
+    "username": "instructor",
+    "schedule": "Thursday & Saturday 11:00 AM",
+    "location": "123 Main Street",
+    "image": null,
+    "id": 1
+  }
+]
+PUT Update Uses Remaining By Class ID
+https://anywhere-fitness.herokuapp.com/classes/:id/update
+
+Send user_id and uses_remainingin the Body of the Request
+
+{
+	"user_id": 4,
+	"uses_remaining": 8
+}
