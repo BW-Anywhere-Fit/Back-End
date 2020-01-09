@@ -64,24 +64,30 @@ router.delete("/remove/:id", restricted, (req, res) => {
       res.status(500).json({ message: "error removing user from class" });
     });
 });
-/////PUT Update Client Uses Remaining by Class ID
-router.put("/:id/list/update", restricted, (req, res) => {
-  const { user_id, uses_remaining } = req.body;
-  if (user_id && uses_remaining) {
-    classes
-      .updateClassUses(req.params.id, user_id, req.body)
-      .then(classes => {
-        res.status(200).json(classes);
-      })
-      .catch(err => {
-        res.status(500).json({ message: "error updating uses" });
-      });
-  } else {
-    res
-      .status(400)
-      .json({ message: "bad request, user_id and uses_remaining is required" });
-  }
+/////PUT Update classes
+router.put('/:id/update', restricted, (req, res) => {
+  const { id } = req.params;
+  const changes = req.body;
+
+  classes.getByIdClasses(id)
+    .then(findClass => {
+      if (findClass) {
+        classes.editClass(changes, id)
+          .then(updatedClass => {
+            res.json(updatedClass)
+          })
+      } else {
+        res.status(404)
+          .json({ message: 'Could not find class with given id' })
+      }
+    })
+    .catch(err => {
+      console.log('Error updating class PUT', err)
+      res.status(500)
+        .json({ message: 'Failed to update class information' })
+    })
 });
+
 /////GET Classes by instructor ID -> Returns All Class for Instructor
 router.get("/instructor/:id", restricted, (req, res) => {
   classes
