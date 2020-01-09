@@ -69,7 +69,7 @@ router.put('/:id/update', restricted, (req, res) => {
   const { id } = req.params;
   const changes = req.body;
 
-  classes.getByIdClasses(id)
+  classes.getClassById(id)
     .then(findClass => {
       if (findClass) {
         classes.editClass(changes, id)
