@@ -11,7 +11,8 @@ module.exports = {
   removeClass,
   removdeUserFromClass,
   removeClassesByInstructor,
-  updateClassUses
+  updateClassUses,
+  editClass
 };
 
 function getClasses() {
@@ -121,3 +122,9 @@ function updateClassUses(classId, user_id, updatedInfo) {
       return getUsersByClass(classId);
     });
 }
+
+function editClass(changes, id) {
+  return db('classes')
+    .where({ id })
+    .update(changes, '*')
+};
