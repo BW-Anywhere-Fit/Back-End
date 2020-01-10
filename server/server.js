@@ -17,7 +17,7 @@ server.use(cors());
 server.use(helmet());
 
 server.get("/", (req, res) => {
-  res.status(200).json({ api: "connected" });
+  res.status(200).json({ message: 'Welcome to the Anywhere Fitness API 💪' });
 });
 
 server.use("/users", restricted, instructor, usersRouter);
